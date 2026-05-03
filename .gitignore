@@ -1,0 +1,24 @@
+# --- Secrets & Local Config ---
+.env
+.env.*
+!.env.example
+
+# --- Logs & OS Files ---
+*.log
+.DS_Store
+Thumbs.db
+
+# --- Certbot & SSL ---
+# This ignores the entire certbot folder structure (keys and challenges)
+nginx/certbot/conf/
+nginx/certbot/www/
+
+# --- Python / App Artifacts ---
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- Database ---
+# If you ever mount a local folder for your DB data
+db-data/

@@ -1,0 +1,63 @@
+services:
+  gdcheerioscom:
+    env_file: .env
+    container_name: gdcheerioscom
+    image: gdcheerios/gdcheerioscom:${TAG:-latest}
+    restart: always
+    expose:
+      - "8000"
+    networks:
+      - backend
+    volumes:
+      - static_volume:/app/static
+
+  gdcheeriosws:
+    env_file: .env
+    container_name: gdcheeriosws
+    image: gdcheerios/gdcheeriosws:${TAG:-latest}
+    restart: always
+    expose:
+      - "8765"
+    networks:
+      - backend
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "25565:25565"
+    depends_on:
+      - gdcheerioscom
+      - gdcheeriosws
+    volumes:
+      - ./nginx/${NGINX_CONFIG:-nginx.conf}:/etc/nginx/nginx.conf:ro
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - static_volume:/static:ro
+    networks:
+      - backend
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    entrypoint: >
+      /bin/sh -c "trap exit TERM;
+      while :; do
+        certbot renew;
+        sleep 12h & wait $${!};
+      done;"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  static_volume:
