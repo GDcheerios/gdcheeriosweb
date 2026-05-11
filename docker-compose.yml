@@ -21,6 +21,24 @@ services:
     networks:
       - backend
 
+  status:
+    container_name: status
+    image: grafana/otel-lgtm
+    restart: always
+    environment:
+      - GF_SERVER_DOMAIN=${DOMAIN}
+      - GF_SERVER_ROOT_URL=/status/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/my_public_status.json
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    expose:
+      - "3000"
+    networks:
+      - backend
+
   nginx:
     container_name: nginx
     build: ./nginx
