@@ -1,0 +1,33 @@
+prometheus.exporter.unix "local_system" {
+  procfs_path = "/host/root/proc"
+  sysfs_path  = "/host/root/sys"
+  rootfs_path = "/host/root"
+}
+
+prometheus.exporter.cadvisor "docker_stats" {
+  docker_host = "unix:///var/run/docker.sock"
+  store_container_labels = true
+}
+
+otelcol.receiver.prometheus "default" {
+  output {
+    metrics = [otelcol.exporter.otlp.status_hub.input]
+  }
+}
+
+prometheus.scrape "metrics_scraper" {
+  targets = concat(
+    prometheus.exporter.unix.local_system.targets,
+    prometheus.exporter.cadvisor.docker_stats.targets,
+  )
+  forward_to = [otelcol.receiver.prometheus.default.receiver]
+}
+
+otelcol.exporter.otlp "status_hub" {
+  client {
+    endpoint = "status:4317"
+    tls {
+      insecure = true
+    }
+  }
+}

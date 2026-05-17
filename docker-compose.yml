@@ -4,6 +4,14 @@ services:
     container_name: gdcheerioscom
     image: gdcheerios/gdcheerioscom:${TAG:-latest}
     restart: always
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://status:4318
+      - OTEL_SERVICE_NAME=gdcheerioscom
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_TRACES_EXPORTER=otlp
     expose:
       - "8000"
     networks:
@@ -16,6 +24,13 @@ services:
     container_name: gdcheeriosws
     image: gdcheerios/gdcheeriosws:${TAG:-latest}
     restart: always
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://status:4318
+      - OTEL_SERVICE_NAME=gdcheeriosws
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_TRACES_EXPORTER=otlp
     expose:
       - "8765"
     networks:
@@ -26,16 +41,37 @@ services:
     image: grafana/otel-lgtm
     restart: always
     environment:
-      - GF_SERVER_DOMAIN=${DOMAIN}
       - GF_SERVER_ROOT_URL=/status/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
-      - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
-      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/my_public_status.json
-      - GF_SECURITY_ALLOW_EMBEDDING=true
-    expose:
-      - "3000"
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - ./grafana/provioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana_data:/var/lib/grafana
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - backend
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    privileged: true
+    user: root
+    restart: always
+    volumes:
+      - ./config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /:/host/root:ro,rslave
     networks:
       - backend
 

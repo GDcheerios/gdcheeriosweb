@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'gentry-backend'
+    static_configs:
+      - targets: ['gdcheerioscom:8001', 'gdcheeriosws:8001']
