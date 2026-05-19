@@ -1,7 +1,7 @@
 prometheus.exporter.unix "local_system" {
-  procfs_path = "/host/root/proc"
-  sysfs_path  = "/host/root/sys"
-  rootfs_path = "/host/root"
+  procfs_path = coalesce(sys.env("ALLOY_PROCFS_PATH"), "/proc")
+  sysfs_path  = coalesce(sys.env("ALLOY_SYSFS_PATH"), "/sys")
+  rootfs_path = coalesce(sys.env("ALLOY_ROOTFS_PATH"), "/")
 }
 
 prometheus.exporter.cadvisor "docker_stats" {
@@ -9,18 +9,33 @@ prometheus.exporter.cadvisor "docker_stats" {
   store_container_labels = true
 }
 
-otelcol.receiver.prometheus "default" {
-  output {
-    metrics = [otelcol.exporter.otlp.status_hub.input]
+discovery.relabel "host_targets_conditional" {
+  targets = prometheus.exporter.unix.local_system.targets
+  
+  rule {
+    target_label = "__keep_host"
+    replacement  = coalesce(sys.env("ALLOY_COLLECT_HOST"), "false")
+  }
+  
+  rule {
+    source_labels = ["__keep_host"]
+    regex         = "true"
+    action        = "keep"
   }
 }
 
 prometheus.scrape "metrics_scraper" {
   targets = concat(
-    prometheus.exporter.unix.local_system.targets,
     prometheus.exporter.cadvisor.docker_stats.targets,
+    discovery.relabel.host_targets_conditional.output,
   )
   forward_to = [otelcol.receiver.prometheus.default.receiver]
+}
+
+otelcol.receiver.prometheus "default" {
+  output {
+    metrics = [otelcol.exporter.otlp.status_hub.input]
+  }
 }
 
 otelcol.exporter.otlp "status_hub" {
