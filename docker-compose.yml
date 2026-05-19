@@ -18,6 +18,8 @@ services:
       - backend
     volumes:
       - static_volume:/app/static
+    depends_on:
+      - postgres_server
 
   gdcheeriosws:
     env_file: .env
@@ -35,6 +37,8 @@ services:
       - "8765"
     networks:
       - backend
+    depends_on:
+      - postgres_server
 
   postgres_server:
     image: postgres:18-alpine
@@ -80,13 +84,15 @@ services:
     privileged: true
     user: root
     restart: always
+    environment:
+      - ALLOY_MOUNT_PROPAGATION=${ALLOY_MOUNT_PROPAGATION:-rprivate}
     volumes:
       - ./config.alloy:/etc/alloy/config.alloy:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
-      - /:/host/root:ro,rslave
+      - /:/host/root:ro
     networks:
       - backend
 
@@ -131,3 +137,4 @@ networks:
 volumes:
   static_volume:
   postgres_data:
+  lgtm-data:
