@@ -1,7 +1,8 @@
 @echo off
 echo checking .env
-if exist ".env" (echo "yurp")
-else (
+if exist ".env" (
+    echo "yurp"
+) else (
     echo creating .env file
     copy ".env.example" ".env"
 )
