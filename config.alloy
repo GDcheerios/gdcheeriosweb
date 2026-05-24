@@ -5,18 +5,18 @@ prometheus.exporter.unix "local_system" {
 }
 
 prometheus.exporter.cadvisor "docker_stats" {
-  docker_host = "unix:///var/run/docker.sock"
+  docker_host            = "unix:///var/run/docker.sock"
   store_container_labels = true
 }
 
 discovery.relabel "host_targets_conditional" {
   targets = prometheus.exporter.unix.local_system.targets
-  
+
   rule {
     target_label = "__keep_host"
     replacement  = coalesce(sys.env("ALLOY_COLLECT_HOST"), "false")
   }
-  
+
   rule {
     source_labels = ["__keep_host"]
     regex         = "true"
@@ -34,15 +34,13 @@ prometheus.scrape "metrics_scraper" {
 
 otelcol.receiver.prometheus "default" {
   output {
-    metrics = [otelcol.exporter.otlp.status_hub.input]
+    metrics = [otelcol.exporter.otlphttp.status_hub.input]
   }
 }
 
-otelcol.exporter.otlp "status_hub" {
+// Switched from otlp to otlphttp to match your Python apps
+otelcol.exporter.otlphttp "status_hub" {
   client {
-    endpoint = "status:4317"
-    tls {
-      insecure = true
-    }
+    endpoint = "http://status:4318"
   }
 }
