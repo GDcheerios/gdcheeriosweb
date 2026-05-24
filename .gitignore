@@ -22,3 +22,4 @@ venv/
 # --- Database ---
 # If you ever mount a local folder for your DB data
 db-data/
+grafana_data

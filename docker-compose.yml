@@ -60,16 +60,18 @@ services:
     image: grafana/otel-lgtm
     restart: always
     environment:
-      - GF_SERVER_ROOT_URL=/status/
+      - GF_SERVER_ROOT_URL=${DOMAIN}/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_DASHBOARDS_ALLOW_UI_UPDATES=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
     volumes:
-      - ./grafana/provioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - ./grafana_data:/var/lib/grafana
+      - ./grafana_data:/data
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "3000:3000"
