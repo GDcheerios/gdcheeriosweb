@@ -5,8 +5,8 @@
     "name": "gd8pdt4",
     "namespace": "default",
     "uid": "ace9a1a3-4f35-4a6c-84b3-b4d887d23700",
-    "resourceVersion": "1779614539911018",
-    "generation": 1,
+    "resourceVersion": "1779839635863009",
+    "generation": 3,
     "creationTimestamp": "2026-05-24T09:22:19Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "333663935537152"
@@ -14,7 +14,10 @@
     "annotations": {
       "grafana.app/createdBy": "user:dfn0lpiz9c000e",
       "grafana.app/folder": "",
-      "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)"
+      "grafana.app/message": "added more insight to system stats",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
+      "grafana.app/updatedBy": "user:dfn0lpiz9c000e",
+      "grafana.app/updatedTimestamp": "2026-05-26T23:53:55Z"
     }
   },
   "spec": {
@@ -226,7 +229,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "(container_memory_working_set_bytes{name!=\"\"} / scalar(max(machine_memory_bytes))) * 100",
+                        "expr": "(sum(container_memory_working_set_bytes{name!=\"\"}) by (name) / scalar(max(machine_memory_bytes))) * 100",
                         "instant": false,
                         "legendFormat": "{{name}}",
                         "range": true
@@ -300,7 +303,7 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 1,
+                    "lineWidth": 5,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -480,41 +483,19 @@
                   "spec": {
                     "query": {
                       "kind": "DataQuery",
-                      "group": "prometheus",
+                      "group": "datasource",
                       "version": "v0",
                       "datasource": {
                         "name": "prometheus"
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(rate(node_disk_read_bytes_total[5m]))",
-                        "legendFormat": "Server Read",
+                        "expr": "100 - ((node_filesystem_avail_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"} * 100) / node_filesystem_size_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"})",
+                        "legendFormat": "server",
                         "range": true
                       }
                     },
-                    "refId": "Server Read",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum by (name) (rate(container_fs_reads_bytes_total{name!=\"\"}[5m]))",
-                        "instant": false,
-                        "legendFormat": "{{name}} Read",
-                        "range": true
-                      }
-                    },
-                    "refId": "Containers Read",
+                    "refId": "Server",
                     "hidden": false
                   }
                 },
@@ -530,36 +511,13 @@
                       },
                       "spec": {
                         "editorMode": "builder",
-                        "expr": "sum(rate(node_disk_written_bytes_total[5m]))",
+                        "expr": "sum(container_fs_usage_bytes{name!=\"\"}) by (name)",
                         "instant": false,
-                        "legendFormat": "Server Write",
+                        "legendFormat": "__auto",
                         "range": true
                       }
                     },
-                    "refId": "Server Write",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum by (name) (rate(container_fs_writes_bytes_total{name!=\"\"}[5m]))",
-                        "format": "time_series",
-                        "instant": false,
-                        "legendFormat": "{{name}} Write",
-                        "range": true
-                      }
-                    },
-                    "refId": "Containers Write",
+                    "refId": "Containers",
                     "hidden": false
                   }
                 }
@@ -592,7 +550,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "decbytes",
+                  "unit": "percent",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -649,6 +607,305 @@
             }
           }
         }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<h1 style=\"text-align: center;\">GDcheerios status</h1>",
+                "mode": "html"
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
+            }
+          },
+          "transparent": true
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "id": 6,
+          "title": "Cpu Cores",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count(node_cpu_seconds_total{mode=\"idle\"})",
+                        "format": "heatmap",
+                        "instant": true,
+                        "legendFormat": "wad",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-7": {
+        "kind": "Panel",
+        "spec": {
+          "id": 7,
+          "title": "Memory",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "node_memory_MemTotal_bytes",
+                        "instant": true,
+                        "legendFormat": "Memory",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "decbytes",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-8": {
+        "kind": "Panel",
+        "spec": {
+          "id": 8,
+          "title": "Disk Size",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "node_filesystem_size_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"}",
+                        "instant": true,
+                        "legendFormat": "Memory",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "decbytes",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
       }
     },
     "layout": {
@@ -660,8 +917,21 @@
             "spec": {
               "x": 0,
               "y": 0,
-              "width": 12,
-              "height": 8,
+              "width": 24,
+              "height": 2,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-5"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 2,
+              "width": 6,
+              "height": 9,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-1"
@@ -671,10 +941,10 @@
           {
             "kind": "GridLayoutItem",
             "spec": {
-              "x": 12,
-              "y": 0,
-              "width": 12,
-              "height": 8,
+              "x": 6,
+              "y": 2,
+              "width": 6,
+              "height": 9,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-2"
@@ -684,10 +954,23 @@
           {
             "kind": "GridLayoutItem",
             "spec": {
-              "x": 0,
-              "y": 8,
-              "width": 12,
-              "height": 8,
+              "x": 12,
+              "y": 2,
+              "width": 6,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-4"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 18,
+              "y": 2,
+              "width": 6,
+              "height": 9,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-3"
@@ -697,20 +980,59 @@
           {
             "kind": "GridLayoutItem",
             "spec": {
-              "x": 12,
-              "y": 8,
-              "width": 12,
-              "height": 8,
+              "x": 0,
+              "y": 11,
+              "width": 6,
+              "height": 3,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-4"
+                "name": "panel-6"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 6,
+              "y": 11,
+              "width": 6,
+              "height": 3,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-7"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 12,
+              "y": 11,
+              "width": 6,
+              "height": 3,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-8"
               }
             }
           }
         ]
       }
     },
-    "links": [],
+    "links": [
+      {
+        "title": "New link",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      }
+    ],
     "liveNow": false,
     "preload": false,
     "tags": [],
