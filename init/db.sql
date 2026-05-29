@@ -204,7 +204,7 @@ CREATE TABLE gq.leaderboards (
 CREATE TABLE gq.visitations (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id integer REFERENCES account.users(id) ON DELETE CASCADE,
-    location_id smallint REFERENCES gq.locations(id) ON DELETE SET NULL,
+    location_id smallint REFERENCES gq.content(id) ON DELETE SET NULL,
     arrived timestamp with time zone DEFAULT now() NOT NULL,
     departed timestamp with time zone
 );
