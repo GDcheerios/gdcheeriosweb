@@ -19,7 +19,8 @@ services:
     volumes:
       - static_volume:/app/static
     depends_on:
-      - postgres_server
+      - nginx
+      - psql
 
   gdcheeriosws:
     env_file: .env
@@ -38,9 +39,10 @@ services:
     networks:
       - backend
     depends_on:
-      - postgres_server
+      - nginx
+      - psql
 
-  postgres_server:
+  psql:
     image: postgres:18-alpine
     container_name: psql
     environment:
@@ -59,6 +61,9 @@ services:
     container_name: status
     image: grafana/otel-lgtm
     restart: always
+    depends_on:
+      - nginx
+      - alloy
     environment:
       - GF_SERVER_ROOT_URL=${DOMAIN}/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
@@ -86,6 +91,8 @@ services:
     privileged: true
     user: root
     restart: always
+    depends_on:
+      - nginx
     environment:
       - ALLOY_COLLECT_HOST=${ALLOY_COLLECT_HOST:-false}
       - ALLOY_MOUNT_PROPAGATION=${ALLOY_MOUNT_PROPAGATION:-rprivate}
@@ -112,9 +119,6 @@ services:
       - "80:80"
       - "443:443"
       - "25565:25565"
-    depends_on:
-      - gdcheerioscom
-      - gdcheeriosws
     volumes:
       - ./nginx/${NGINX_CONFIG:-nginx.conf}:/etc/nginx/nginx.conf:ro
       - ./nginx/certbot/conf:/etc/letsencrypt
