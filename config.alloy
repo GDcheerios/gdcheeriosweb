@@ -38,7 +38,16 @@ otelcol.receiver.prometheus "default" {
   }
 }
 
-// Switched from otlp to otlphttp to match your Python apps
+prometheus.scrape "python_apps" {
+  targets = [
+    {"__address__" = "gdcheerioscom:8000", "job" = "gdcheerioscom"},
+    {"__address__" = "gdcheeriosws:8765", "job" = "gdcheeriosws"},
+  ]
+  scrape_interval = "15s"
+  
+  forward_to = [otelcol.receiver.prometheus.default.receiver]
+}
+
 otelcol.exporter.otlphttp "status_hub" {
   client {
     endpoint = "http://status:4318"
