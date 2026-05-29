@@ -1,5 +1,5 @@
-CREATE DATABASE gdcheerios;
-\c gdcheerios;
+CREATE DATABASE gdcheeriosdb;
+\c gdcheeriosdb;
 
 -- ==========================================
 -- 1. SCHEMA DEFINITIONS
