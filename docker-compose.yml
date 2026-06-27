@@ -37,6 +37,8 @@ services:
     expose:
       - "8765"
       - "8000"
+    ports:
+      - "8765:8765"
     networks:
       - backend
     depends_on:
