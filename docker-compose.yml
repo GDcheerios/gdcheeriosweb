@@ -19,8 +19,10 @@ services:
     volumes:
       - static_volume:/app/static
     depends_on:
-      - nginx
-      - psql
+      nginx:
+        condition: service_started
+      psql:
+        condition: service_healthy
 
   gdcheeriosws:
     env_file: .env
@@ -42,8 +44,10 @@ services:
     networks:
       - backend
     depends_on:
-      - nginx
-      - psql
+      nginx:
+        condition: service_started
+      psql:
+        condition: service_healthy
 
   psql:
     image: postgres:18-alpine
@@ -52,6 +56,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
     ports:
       - "5432:5432"
     volumes:
