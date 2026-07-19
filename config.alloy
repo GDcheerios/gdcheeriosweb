@@ -53,3 +53,22 @@ otelcol.exporter.otlphttp "status_hub" {
     endpoint = "http://status:4318"
   }
 }
+
+prometheus.exporter.postgres "local_postgres" {
+  data_source_names = [
+    format("postgresql://%s:%s@psql:5432/gdcheeriosdb?sslmode=disable", sys.env("MONITOR_USER"), sys.env("MONITOR_PASSWORD")),
+  ]
+
+  enabled_collectors = ["stat_database", "database", "stat_statements"]
+}
+
+prometheus.scrape "postgres_metrics" {
+  targets    = prometheus.exporter.postgres.local_postgres.targets
+  forward_to = [prometheus.remote_write.local_lgtm.receiver]
+}
+
+prometheus.remote_write "local_lgtm" {
+  endpoint {
+    url = "http://status:9090/api/v1/write"
+  }
+}

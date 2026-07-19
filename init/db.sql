@@ -1,6 +1,25 @@
 CREATE DATABASE gdcheeriosdb;
 \c gdcheeriosdb;
 
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+
+DO $$
+DECLARE
+    monitor_user TEXT := current_setting('custom.monitor_user', true);
+    monitor_pass TEXT := current_setting('custom.monitor_password', true);
+BEGIN
+    IF monitor_user IS NOT NULL AND monitor_pass IS NOT NULL THEN
+        IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = monitor_user) THEN
+            EXECUTE format('CREATE ROLE %I WITH LOGIN PASSWORD %L', monitor_user, monitor_pass);
+        ELSE
+            EXECUTE format('ALTER ROLE %I WITH PASSWORD %L', monitor_user, monitor_pass);
+        END IF;
+        
+        EXECUTE format('GRANT pg_monitor TO %I', monitor_user);
+        EXECUTE format('GRANT SELECT ON pg_stat_statements TO %I', monitor_user);
+    END IF;
+END $$;
+
 -- ==========================================
 -- 1. SCHEMA DEFINITIONS
 -- ==========================================
