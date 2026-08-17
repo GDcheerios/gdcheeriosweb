@@ -17,4 +17,4 @@ set ALLOY_ROOTFS_PATH=/
 set ALLOY_SYSTEM_TARGETS=[]
 set ALLOY_MOUNT_PROPAGATION=rprivate
 
-docker compose up -d --remove-orphans
+docker compose up --build --remove-orphans
