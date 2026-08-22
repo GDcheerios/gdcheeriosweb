@@ -49,6 +49,28 @@ services:
       psql:
         condition: service_healthy
 
+  gdcheeriosstorage:
+    image: gdcheerios/gdcheeriosstorage:${TAG:-latest}
+    container_name: gdcheeriosstorage
+    restart: always
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - STORAGE_DIR=/data
+      - MAX_UPLOAD_MB=${MAX_UPLOAD_MB:-256}
+    expose:
+      - "8000"
+    networks:
+      - backend
+    volumes:
+      - storage_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
   psql:
     image: postgres:18-alpine
     container_name: psql
@@ -91,7 +113,6 @@ services:
       - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
     volumes:
       - ./grafana_data:/data
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "3000:3000"
       - "4317:4317"
@@ -166,3 +187,4 @@ volumes:
   static_volume:
   postgres_data:
   lgtm-data:
+  storage_data:

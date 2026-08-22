@@ -42,6 +42,7 @@ prometheus.scrape "python_apps" {
   targets = [
     {"__address__" = "gdcheerioscom:8000", "job" = "gdcheerioscom"},
     {"__address__" = "gdcheeriosws:8000", "job" = "gdcheeriosws"},
+    {"__address__" = "gdcheeriosstorage:8000", "job" = "gdcheeriosstorage"},
   ]
   scrape_interval = "15s"
 
