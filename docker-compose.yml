@@ -3,6 +3,7 @@ services:
     env_file: .env
     container_name: gdcheerioscom
     image: gdcheerios/gdcheerioscom:${TAG:-latest}
+#    image: gdcheerioscom:dev
     restart: always
     environment:
       - PYTHONUNBUFFERED=1
@@ -28,6 +29,7 @@ services:
     env_file: .env
     container_name: gdcheeriosws
     image: gdcheerios/gdcheeriosws:${TAG:-latest}
+#    image: gdcheeriosws:dev
     restart: always
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://status:4318
@@ -51,6 +53,7 @@ services:
 
   gdcheeriosstorage:
     image: gdcheerios/gdcheeriosstorage:${TAG:-latest}
+#    image: gdcheeriosstorage:dev
     container_name: gdcheeriosstorage
     restart: always
     env_file: .env
