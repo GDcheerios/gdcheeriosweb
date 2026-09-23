@@ -314,8 +314,6 @@ create table osu.teams
             on delete cascade
 );
 
-alter sequence osu.match_teams_id_seq owned by osu.teams.id;
-
 create table osu.match_users
 (
     match_id         integer                      not null
