@@ -302,12 +302,12 @@ create table osu.scores
 
 create table osu.teams
 (
-    id       integer    default nextval('osu.match_teams_id_seq'::regclass) not null
+    id       integer generated always as identity
         constraint teams_pk
             primary key,
-    name     text       default 'team'::text                                not null,
-    acronym  varchar(4) default 'team'::character varying                   not null,
-    color    varchar(7) default '#808080'::character varying                not null,
+    name     text       default 'team'::text                 not null,
+    acronym  varchar(4) default 'team'::character varying    not null,
+    color    varchar(7) default '#808080'::character varying not null,
     match_id integer
         constraint teams_matches_id_fk
             references osu.matches
