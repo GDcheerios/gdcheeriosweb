@@ -4,19 +4,18 @@
   "metadata": {
     "name": "gd8pdt4",
     "namespace": "default",
-    "uid": "cd1177a8-3e02-41f6-b453-7e9b1fa3c51f",
-    "resourceVersion": "1784447030987003",
-    "generation": 9,
-    "creationTimestamp": "2026-06-17T06:31:10Z",
+    "uid": "ace9a1a3-4f35-4a6c-84b3-b4d887d23700",
+    "resourceVersion": "1790358141193995",
+    "generation": 11,
+    "creationTimestamp": "2026-05-24T09:22:19Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "4484298835193856"
+      "grafana.app/deprecatedInternalID": "333663935537152"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:ffpdrtgqgesjkb",
-      "grafana.app/folder": "",
-      "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
-      "grafana.app/updatedBy": "user:ffpdrtgqgesjkb",
-      "grafana.app/updatedTimestamp": "2026-07-19T07:43:50Z"
+      "grafana.app/createdBy": "user:dfn0lpiz9c000e",
+      "grafana.app/saved-from-ui": "Grafana v13.2.1 (56cd3e9288)",
+      "grafana.app/updatedBy": "user:dfn0lpiz9c000e",
+      "grafana.app/updatedTimestamp": "2026-09-25T17:42:21Z"
     }
   },
   "spec": {
@@ -106,7 +105,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -143,7 +142,8 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "palette-classic",
+                    "seriesBy": "max"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -152,7 +152,7 @@
                     "axisLabel": "",
                     "axisPlacement": "auto",
                     "barAlignment": 0,
-                    "barWidthFactor": 0.6,
+                    "barWidthFactor": 0.9,
                     "drawStyle": "line",
                     "fillOpacity": 0,
                     "gradientMode": "none",
@@ -163,12 +163,15 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 4,
-                    "pointSize": 5,
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
+                    "lineWidth": 1,
+                    "pointSize": 1,
                     "scaleDistribution": {
                       "type": "linear"
                     },
-                    "showPoints": "auto",
+                    "showPoints": "always",
                     "showValues": false,
                     "spanNulls": false,
                     "stacking": {
@@ -226,27 +229,25 @@
           },
           "vizConfig": {
             "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.1.0",
+            "group": "stat",
+            "version": "13.2.1",
             "spec": {
               "options": {
-                "annotations": {
-                  "clustering": -1,
-                  "multiLane": false
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
                 },
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "enableFacetedFilter": false,
-                  "overflow": "ellipsis",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
               },
               "fieldConfig": {
                 "defaults": {
@@ -261,41 +262,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 25,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineWidth": 1,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "auto",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
+                    "mode": "thresholds"
                   }
                 },
                 "overrides": []
@@ -367,7 +334,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -488,7 +455,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -630,7 +597,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -668,7 +635,8 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "palette-classic",
+                    "seriesBy": "max"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -677,7 +645,7 @@
                     "axisLabel": "",
                     "axisPlacement": "auto",
                     "barAlignment": 0,
-                    "barWidthFactor": 0.6,
+                    "barWidthFactor": 0.9,
                     "drawStyle": "line",
                     "fillOpacity": 0,
                     "gradientMode": "none",
@@ -688,12 +656,15 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 5,
-                    "pointSize": 5,
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
+                    "lineWidth": 1,
+                    "pointSize": 1,
                     "scaleDistribution": {
                       "type": "linear"
                     },
-                    "showPoints": "auto",
+                    "showPoints": "always",
                     "showValues": false,
                     "spanNulls": false,
                     "stacking": {
@@ -734,7 +705,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(rate(node_network_receive_bytes_total{device!~\"veth.*|br-.*|docker.*|lo\"}[5m]))",
+                        "expr": "sum(rate(container_network_receive_bytes_total{id=\"/\"}[5m]))",
                         "legendFormat": "Server Receive",
                         "range": true
                       }
@@ -754,7 +725,7 @@
                         "name": "prometheus"
                       },
                       "spec": {
-                        "editorMode": "builder",
+                        "editorMode": "code",
                         "expr": "sum by (name) (rate(container_network_receive_bytes_total{name!=\"\"}[5m]))",
                         "instant": false,
                         "legendFormat": "{{label_name}} Receive",
@@ -773,7 +744,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -811,7 +782,8 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "palette-classic",
+                    "seriesBy": "max"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -820,9 +792,9 @@
                     "axisLabel": "",
                     "axisPlacement": "auto",
                     "barAlignment": 0,
-                    "barWidthFactor": 0.6,
+                    "barWidthFactor": 0.9,
                     "drawStyle": "line",
-                    "fillOpacity": 0,
+                    "fillOpacity": 50,
                     "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
@@ -831,17 +803,20 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 1,
-                    "pointSize": 5,
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
+                    "lineWidth": 2,
+                    "pointSize": 1,
                     "scaleDistribution": {
                       "type": "linear"
                     },
-                    "showPoints": "auto",
+                    "showPoints": "always",
                     "showValues": false,
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
-                      "mode": "none"
+                      "mode": "normal"
                     },
                     "thresholdsStyle": {
                       "mode": "off"
@@ -877,7 +852,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "100 - ((node_filesystem_avail_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"} * 100) / node_filesystem_size_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"})",
+                        "expr": "sum(rate(container_fs_reads_bytes_total{id=\"/\"}[5m])) + sum(rate(container_fs_writes_bytes_total{id=\"/\"}[5m]))",
                         "legendFormat": "server",
                         "range": true
                       }
@@ -897,8 +872,8 @@
                         "name": "prometheus"
                       },
                       "spec": {
-                        "editorMode": "builder",
-                        "expr": "sum(container_fs_usage_bytes{name!=\"\"}) by (name)",
+                        "editorMode": "code",
+                        "expr": "sum by (name) (rate(container_fs_reads_bytes_total{name!=\"\"}[5m]) + rate(container_fs_writes_bytes_total{name!=\"\"}[5m]))",
                         "instant": false,
                         "legendFormat": "__auto",
                         "range": true
@@ -916,7 +891,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -939,7 +914,7 @@
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "percent",
+                  "unit": "decbytes",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -954,7 +929,8 @@
                     ]
                   },
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "palette-classic",
+                    "seriesBy": "max"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -963,9 +939,9 @@
                     "axisLabel": "",
                     "axisPlacement": "auto",
                     "barAlignment": 0,
-                    "barWidthFactor": 0.6,
+                    "barWidthFactor": 0.9,
                     "drawStyle": "line",
-                    "fillOpacity": 0,
+                    "fillOpacity": 50,
                     "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
@@ -974,17 +950,20 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 1,
-                    "pointSize": 5,
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
+                    "lineWidth": 2,
+                    "pointSize": 1,
                     "scaleDistribution": {
                       "type": "linear"
                     },
-                    "showPoints": "auto",
+                    "showPoints": "always",
                     "showValues": false,
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
-                      "mode": "none"
+                      "mode": "normal"
                     },
                     "thresholdsStyle": {
                       "mode": "off"
@@ -1015,7 +994,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "text",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "code": {
@@ -1078,7 +1057,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1164,7 +1143,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1233,13 +1212,58 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "node_filesystem_size_bytes{fstype=~\"ext4|xfs\", mountpoint=\"/\"}",
-                        "instant": true,
-                        "legendFormat": "Memory",
-                        "range": false
+                        "expr": "max(container_fs_limit_bytes{id=\"/\"})",
+                        "instant": false,
+                        "legendFormat": "total",
+                        "range": true
                       }
                     },
                     "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "max(container_fs_usage_bytes{id=\"/\"})",
+                        "instant": false,
+                        "legendFormat": "used",
+                        "range": true
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "max(container_fs_limit_bytes{id=\"/\"} - container_fs_usage_bytes{id=\"/\"})",
+                        "instant": false,
+                        "legendFormat": "available",
+                        "range": true
+                      }
+                    },
+                    "refId": "C",
                     "hidden": false
                   }
                 }
@@ -1251,7 +1275,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1337,7 +1361,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.2.1",
             "spec": {
               "options": {
                 "colorMode": "value",
