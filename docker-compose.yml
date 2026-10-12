@@ -115,8 +115,8 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
       - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
 
+      - ENABLE_LOGS_LOKI=true
       - PROMETHEUS_EXTRA_ARGS=--storage.tsdb.retention.time=0d
-      - LOKI_EXTRA_ARGS=-limits.max-query-lookback=0s
       - TEMPO_EXTRA_ARGS=-compactor.compaction.block-retention=0s
     volumes:
       - ./grafana_data:/data
