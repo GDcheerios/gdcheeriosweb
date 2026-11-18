@@ -74,6 +74,16 @@ services:
       retries: 3
       start_period: 5s
 
+  osu-worker:
+    image: gdcheerios/osu-worker:${TAG:-latest}
+    container_name: osu-worker
+    env_file: .env
+    restart: no
+    depends_on:
+      - psql
+    networks:
+      - backend
+
   psql:
     image: postgres:18-alpine
     container_name: psql
