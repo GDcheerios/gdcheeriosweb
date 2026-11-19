@@ -78,9 +78,14 @@ services:
     image: gdcheerios/osu-worker:${TAG:-latest}
     container_name: osu-worker
     env_file: .env
-    restart: no
+    restart: always
     depends_on:
-      - psql
+      psql:
+        condition: service_healthy
+      gdcheerioscom:
+        condition: service_started
+      gdcheeriosws:
+        condition: service_started
     networks:
       - backend
 
