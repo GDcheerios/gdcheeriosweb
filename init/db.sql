@@ -93,6 +93,7 @@ CREATE TABLE account.supports
     id           uuid                     DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id      integer                  DEFAULT NULL REFERENCES account.users (id) ON DELETE CASCADE,
     weeks        integer                  DEFAULT 1     NOT NULL,
+    purchased    bool                     DEFAULT FALSE NOT NULL,
     supported_on timestamp with time zone DEFAULT now() NOT NULL
 );
 
